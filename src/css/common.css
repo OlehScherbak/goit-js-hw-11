@@ -7,7 +7,7 @@ body {
     Oxygen-Sans, Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #fafafa;
+  background-color: #92beeae3;
   color: #212121;
   line-height: 1.5;
 }
@@ -92,6 +92,7 @@ img {
   justify-content: space-between;
   font-size: 12px;
   gap: 10px;
+  background-color: rgba(140, 211, 244, 0.897);
 }
 
 .info-item {
@@ -103,4 +104,26 @@ img {
 
 .empty {
   height: 50px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+.load-more {
+  display: block;
+  padding: 8px 15px;
+  margin: 12px auto;
+  border: none;
+  border-radius: 10px;
+  background-color: rgba(48, 104, 227, 0.79);
 }

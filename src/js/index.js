@@ -7,18 +7,26 @@ import 'simplelightbox/dist/simple-lightbox.min.css';
 var lightbox = new SimpleLightbox('.gallery a');
 
 const galleryContainer = document.querySelector('.gallery');
+
+const loadMoreBtn = document.querySelector('.load-more');
+loadMoreBtn.addEventListener('click', onLoadMoreClick);
+
 const form = document.querySelector('.search-form');
 form.addEventListener('submit', onFormSubmit);
 
-function onFormSubmit(evt) {
+let page = 1;
+let totalHits;
+let searchQuery;
+
+function onFormSubmit(evt, searchQuery) {
   evt.preventDefault();
-  // alreadyShown = 0;
-  const searchQuery = form.searchQuery.value.trim();
+  searchQuery = form.searchQuery.value.trim();
+  loadMoreBtn.classList.add('visually-hidden');
 
   if (searchQuery !== '') {
-    imgSearch(searchQuery);
+    imgSearch(searchQuery, page);
   } else {
-    return Notify.failure(
+    return Notiflix.Notify.failure(
       'Sorry, there are no images matching your search query. Please try again.'
     );
   }
@@ -43,10 +51,19 @@ async function imgSearch(searchQuery, page) {
     const response = await axios.get(BASE_URL, options);
     // alreadyShown += response.data.hits.length;
 
+    console.log(searchQuery);
     console.log(response.data);
     console.log(response.data.hits);
+
+    totalHits = response.data.total;
+
     createMarkup(response.data);
-    console.log(createMarkup(response.data));
+    if (totalHits > page * options.params.per_page) {
+      page += 1;
+      loadMoreBtn.classList.remove('visually-hidden');
+    } else {
+      loadMoreBtn.classList.add('visually-hidden');
+    }
   } catch (error) {
     console.log(error);
   }
@@ -65,9 +82,9 @@ function createMarkup(imgArray) {
       } = i;
 
       return `<div class="photo-card">
-                  <a class="gallery__link" href="${largeImageURL}" >
-                      <img class="gallery__image"src="${webformatURL}" alt="${tags}" loading="lazy"/>
-                  </a>
+    <a class="gallery__link" href="${largeImageURL}" >
+    <img class="gallery__image"src="${webformatURL}" alt="${tags}" loading="lazy"/>
+    </a>
                   <div class="info">
                       <p class="info-item">
                       <b>Likes</b> ${likes}
@@ -88,4 +105,7 @@ function createMarkup(imgArray) {
 
   galleryContainer.insertAdjacentHTML('beforeend', markup);
   lightbox.refresh();
+}
+function onLoadMoreClick(searchQuery, page) {
+  imgSearch(searchQuery, page);
 }
