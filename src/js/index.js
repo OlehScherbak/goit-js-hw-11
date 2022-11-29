@@ -4,12 +4,7 @@ import axios from 'axios';
 import SimpleLightbox from 'simplelightbox';
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-var lightbox = new SimpleLightbox('.gallery a', {
-  captions: true,
-  captionPosition: 'bottom',
-  captionsData: 'alt',
-  captionDelay: 250,
-});
+var lightbox = new SimpleLightbox('.gallery a');
 
 const galleryContainer = document.querySelector('.gallery');
 const form = document.querySelector('.search-form');
@@ -92,5 +87,5 @@ function createMarkup(imgArray) {
     .join('');
 
   galleryContainer.insertAdjacentHTML('beforeend', markup);
-  // simpleLightBox.refresh();
+  lightbox.refresh();
 }
