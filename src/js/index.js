@@ -17,7 +17,7 @@ form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(evt) {
   evt.preventDefault();
-  alreadyShown = 0;
+  // alreadyShown = 0;
   const searchQuery = form.searchQuery.value.trim();
 
   if (searchQuery !== '') {
@@ -46,7 +46,7 @@ async function imgSearch(searchQuery, page) {
 
   try {
     const response = await axios.get(BASE_URL, options);
-    alreadyShown += response.data.hits.length;
+    // alreadyShown += response.data.hits.length;
 
     console.log(response.data);
     console.log(response.data.hits);
