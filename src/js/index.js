@@ -45,12 +45,12 @@ async function imgSearch(searchedLine, pageNumber) {
   try {
     const response = await axios.get(BASE_URL, options);
 
-    // console.log(searchedLine);
-    // console.log('page: ', page);
-    // console.log(response.data);
-    // console.log(response.data.hits);
-
     totalHits = response.data.total;
+
+    console.log(searchedLine);
+    console.log('page: ', page);
+    console.log(totalHits);
+    console.log(response.data);
 
     createMarkup(response.data);
     if (totalHits === 0) {
