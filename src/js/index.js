@@ -11,7 +11,7 @@ const galleryContainer = document.querySelector('.gallery');
 const form = document.querySelector('.search-form');
 form.addEventListener('submit', onFormSubmit);
 
-let page = 1;
+let page;
 let totalHits;
 let searchQuery;
 
@@ -19,6 +19,8 @@ function onFormSubmit(evt) {
   evt.preventDefault();
   searchQuery = form.searchQuery.value.trim();
   loadMoreBtn.classList.add('visually-hidden');
+  galleryContainer.innerHTML = '';
+  page = 1;
 
   if (searchQuery !== '') {
     imgSearch(searchQuery, page);
@@ -48,6 +50,7 @@ async function imgSearch(searchedLine, pageNumber) {
     const response = await axios.get(BASE_URL, options);
 
     console.log(searchedLine);
+    console.log('page: ', page);
     console.log(response.data);
     console.log(response.data.hits);
 
