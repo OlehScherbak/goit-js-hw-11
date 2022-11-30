@@ -8,9 +8,6 @@ var lightbox = new SimpleLightbox('.gallery a');
 
 const galleryContainer = document.querySelector('.gallery');
 
-const loadMoreBtn = document.querySelector('.load-more');
-loadMoreBtn.addEventListener('click', onLoadMoreClick);
-
 const form = document.querySelector('.search-form');
 form.addEventListener('submit', onFormSubmit);
 
@@ -18,7 +15,7 @@ let page = 1;
 let totalHits;
 let searchQuery;
 
-function onFormSubmit(evt, searchQuery) {
+function onFormSubmit(evt) {
   evt.preventDefault();
   searchQuery = form.searchQuery.value.trim();
   loadMoreBtn.classList.add('visually-hidden');
@@ -32,33 +29,32 @@ function onFormSubmit(evt, searchQuery) {
   }
 }
 
-async function imgSearch(searchQuery, page) {
+async function imgSearch(searchedLine, pageNumber) {
   const BASE_URL = 'https://pixabay.com/api/';
 
   const options = {
     params: {
       key: '31679627-0bccaed8555ea749f004800c2',
-      q: searchQuery,
+      q: searchedLine,
       image_type: 'photo',
       orientation: 'horizontal',
       safesearch: 'true',
-      page: page,
+      page: pageNumber,
       per_page: 40,
     },
   };
 
   try {
     const response = await axios.get(BASE_URL, options);
-    // alreadyShown += response.data.hits.length;
 
-    console.log(searchQuery);
+    console.log(searchedLine);
     console.log(response.data);
     console.log(response.data.hits);
 
     totalHits = response.data.total;
 
     createMarkup(response.data);
-    if (totalHits > page * options.params.per_page) {
+    if (totalHits > pageNumber * options.params.per_page) {
       page += 1;
       loadMoreBtn.classList.remove('visually-hidden');
     } else {
@@ -106,6 +102,10 @@ function createMarkup(imgArray) {
   galleryContainer.insertAdjacentHTML('beforeend', markup);
   lightbox.refresh();
 }
-function onLoadMoreClick(searchQuery, page) {
+
+const loadMoreBtn = document.querySelector('.load-more');
+loadMoreBtn.addEventListener('click', onLoadMoreClick);
+
+function onLoadMoreClick() {
   imgSearch(searchQuery, page);
 }
